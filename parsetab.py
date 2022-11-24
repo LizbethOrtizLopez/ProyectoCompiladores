@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOLDCL BOOLVAL BOOLVAL ELSE FLOATDCL FNUMBER IF INTDCL INUMBER NAME PRINTprog : stmtsstmts : statement stmts\n             | statement statement : INTDCL NAME ";" \n                 | INTDCL NAME "=" expression ";" statement : FLOATDCL NAME ";"statement : BOOLDCL NAME ";"statement : PRINT expression ";"statement : IF "(" boolexp ")" "{" stmts "}"statement : NAME "=" expression ";"expression : \'(\' expression \')\'expression : expression \'+\' expression\n                  | expression \'-\' expression\n                  | expression \'*\' expression\n                  | expression \'/\' expression\n                  | expression \'^\' expressionexpression : INUMBERexpression : FNUMBERexpression : boolexpboolexp : BOOLVALexpression : NAME'
+_lr_signature = 'BOOLDCL BOOLVAL BOOLVAL ELSE EQ FLOATDCL FNUMBER GE GT IF INTDCL INUMBER LE LT NAME NE PRINTprog : stmtsstmts : statement stmts\n             | statement statement : INTDCL NAME ";" \n                 | INTDCL NAME "=" expression ";" statement : FLOATDCL NAME ";"\n                 | FLOATDCL NAME "=" expression ";" statement : BOOLDCL NAME ";"\n                 | BOOLDCL NAME "=" boolexp ";" statement : PRINT expression ";"statement : IF "(" boolexp ")" "{" stmts "}"statement : IF "(" boolexp ")" "{" stmts "}" ELSE "{" stmts "}"statement : NAME "=" expression ";"expression : \'(\' expression \')\'expression : expression \'+\' expression\n                  | expression \'-\' expression\n                  | expression \'*\' expression\n                  | expression \'/\' expression\n                  | expression \'^\' expressionboolexp : expression GT expression\n                  | expression LT expression\n                  | expression GE expression\n                  | expression LE expression\n                  | expression EQ expression\n                  | expression NE expressionexpression : INUMBERexpression : FNUMBERexpression : boolexpboolexp : BOOLVALexpression : NAME'
     
-_lr_action_items = {'INTDCL':([0,3,23,26,27,28,37,45,46,48,],[4,4,-4,-6,-7,-8,-10,-5,4,-9,]),'FLOATDCL':([0,3,23,26,27,28,37,45,46,48,],[6,6,-4,-6,-7,-8,-10,-5,6,-9,]),'BOOLDCL':([0,3,23,26,27,28,37,45,46,48,],[7,7,-4,-6,-7,-8,-10,-5,7,-9,]),'PRINT':([0,3,23,26,27,28,37,45,46,48,],[8,8,-4,-6,-7,-8,-10,-5,8,-9,]),'IF':([0,3,23,26,27,28,37,45,46,48,],[9,9,-4,-6,-7,-8,-10,-5,9,-9,]),'NAME':([0,3,4,6,7,8,12,16,23,24,26,27,28,29,30,31,32,33,37,45,46,48,],[5,5,11,13,14,20,20,20,-4,20,-6,-7,-8,20,20,20,20,20,-10,-5,5,-9,]),'$end':([1,2,3,10,23,26,27,28,37,45,48,],[0,-1,-3,-2,-4,-6,-7,-8,-10,-5,-9,]),'}':([3,10,23,26,27,28,37,45,47,48,],[-3,-2,-4,-6,-7,-8,-10,-5,48,-9,]),'=':([5,11,],[12,24,]),'(':([8,9,12,16,24,29,30,31,32,33,],[16,22,16,16,16,16,16,16,16,16,]),'INUMBER':([8,12,16,24,29,30,31,32,33,],[17,17,17,17,17,17,17,17,17,]),'FNUMBER':([8,12,16,24,29,30,31,32,33,],[18,18,18,18,18,18,18,18,18,]),'BOOLVAL':([8,12,16,22,24,29,30,31,32,33,],[21,21,21,21,21,21,21,21,21,21,]),';':([11,13,14,15,17,18,19,20,21,25,36,38,39,40,41,42,43,],[23,26,27,28,-17,-18,-19,-21,-20,37,45,-12,-13,-14,-15,-16,-11,]),'+':([15,17,18,19,20,21,25,34,36,38,39,40,41,42,43,],[29,-17,-18,-19,-21,-20,29,29,29,29,29,29,29,29,-11,]),'-':([15,17,18,19,20,21,25,34,36,38,39,40,41,42,43,],[30,-17,-18,-19,-21,-20,30,30,30,30,30,30,30,30,-11,]),'*':([15,17,18,19,20,21,25,34,36,38,39,40,41,42,43,],[31,-17,-18,-19,-21,-20,31,31,31,31,31,31,31,31,-11,]),'/':([15,17,18,19,20,21,25,34,36,38,39,40,41,42,43,],[32,-17,-18,-19,-21,-20,32,32,32,32,32,32,32,32,-11,]),'^':([15,17,18,19,20,21,25,34,36,38,39,40,41,42,43,],[33,-17,-18,-19,-21,-20,33,33,33,33,33,33,33,33,-11,]),')':([17,18,19,20,21,34,35,38,39,40,41,42,43,],[-17,-18,-19,-21,-20,43,44,-12,-13,-14,-15,-16,-11,]),'{':([44,],[46,]),}
+_lr_action_items = {'INTDCL':([0,3,23,26,28,30,46,62,63,64,65,67,69,71,],[4,4,-4,-6,-8,-10,-13,-5,-7,-9,4,-11,4,-12,]),'FLOATDCL':([0,3,23,26,28,30,46,62,63,64,65,67,69,71,],[6,6,-4,-6,-8,-10,-13,-5,-7,-9,6,-11,6,-12,]),'BOOLDCL':([0,3,23,26,28,30,46,62,63,64,65,67,69,71,],[7,7,-4,-6,-8,-10,-13,-5,-7,-9,7,-11,7,-12,]),'PRINT':([0,3,23,26,28,30,46,62,63,64,65,67,69,71,],[8,8,-4,-6,-8,-10,-13,-5,-7,-9,8,-11,8,-12,]),'IF':([0,3,23,26,28,30,46,62,63,64,65,67,69,71,],[9,9,-4,-6,-8,-10,-13,-5,-7,-9,9,-11,9,-12,]),'NAME':([0,3,4,6,7,8,12,16,22,23,24,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,46,62,63,64,65,67,69,71,],[5,5,11,13,14,20,20,20,20,-4,20,-6,20,-8,20,-10,20,20,20,20,20,20,20,20,20,20,20,-13,-5,-7,-9,5,-11,5,-12,]),'$end':([1,2,3,10,23,26,28,30,46,62,63,64,67,71,],[0,-1,-3,-2,-4,-6,-8,-10,-13,-5,-7,-9,-11,-12,]),'}':([3,10,23,26,28,30,46,62,63,64,66,67,70,71,],[-3,-2,-4,-6,-8,-10,-13,-5,-7,-9,67,-11,71,-12,]),'=':([5,11,13,14,],[12,24,27,29,]),'(':([8,9,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[16,22,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,]),'INUMBER':([8,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,]),'FNUMBER':([8,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,]),'BOOLVAL':([8,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,]),';':([11,13,14,15,17,18,19,20,21,25,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[23,26,28,30,-26,-27,-28,-30,-29,46,62,63,64,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-14,]),'+':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[31,-26,-27,-28,-30,-29,31,31,-28,31,31,31,-28,31,31,31,31,31,31,31,31,31,31,31,-14,]),'-':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[32,-26,-27,-28,-30,-29,32,32,-28,32,32,32,-28,32,32,32,32,32,32,32,32,32,32,32,-14,]),'*':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[33,-26,-27,-28,-30,-29,33,33,-28,33,33,33,-28,33,33,33,33,33,33,33,33,33,33,33,-14,]),'/':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[34,-26,-27,-28,-30,-29,34,34,-28,34,34,34,-28,34,34,34,34,34,34,34,34,34,34,34,-14,]),'^':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[35,-26,-27,-28,-30,-29,35,35,-28,35,35,35,-28,35,35,35,35,35,35,35,35,35,35,35,-14,]),'GT':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[36,-26,-27,-28,-30,-29,36,36,-28,36,36,36,-28,36,36,36,36,36,36,36,36,36,36,36,-14,]),'LT':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[37,-26,-27,-28,-30,-29,37,37,-28,37,37,37,-28,37,37,37,37,37,37,37,37,37,37,37,-14,]),'GE':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[38,-26,-27,-28,-30,-29,38,38,-28,38,38,38,-28,38,38,38,38,38,38,38,38,38,38,38,-14,]),'LE':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[39,-26,-27,-28,-30,-29,39,39,-28,39,39,39,-28,39,39,39,39,39,39,39,39,39,39,39,-14,]),'EQ':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[40,-26,-27,-28,-30,-29,40,40,-28,40,40,40,-28,40,40,40,40,40,40,40,40,40,40,40,-14,]),'NE':([15,17,18,19,20,21,25,42,43,44,45,47,48,49,50,51,52,53,54,55,56,57,58,59,60,],[41,-26,-27,-28,-30,-29,41,41,-28,41,41,41,-28,41,41,41,41,41,41,41,41,41,41,41,-14,]),')':([17,18,19,20,21,42,43,49,50,51,52,53,54,55,56,57,58,59,60,],[-26,-27,-28,-30,-29,60,61,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-14,]),'{':([61,68,],[65,69,]),'ELSE':([67,],[68,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'prog':([0,],[1,]),'stmts':([0,3,46,],[2,10,47,]),'statement':([0,3,46,],[3,3,3,]),'expression':([8,12,16,24,29,30,31,32,33,],[15,25,34,36,38,39,40,41,42,]),'boolexp':([8,12,16,22,24,29,30,31,32,33,],[19,19,19,35,19,19,19,19,19,19,]),}
+_lr_goto_items = {'prog':([0,],[1,]),'stmts':([0,3,65,69,],[2,10,66,70,]),'statement':([0,3,65,69,],[3,3,3,3,]),'expression':([8,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[15,25,42,44,45,47,44,49,50,51,52,53,54,55,56,57,58,59,]),'boolexp':([8,12,16,22,24,27,29,31,32,33,34,35,36,37,38,39,40,41,],[19,19,19,43,19,19,48,19,19,19,19,19,19,19,19,19,19,19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,34 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> prog","S'",1,None,None,None),
-  ('prog -> stmts','prog',1,'p_prog','compi.py',90),
-  ('stmts -> statement stmts','stmts',2,'p_statements_recursion','compi.py',97),
-  ('stmts -> statement','stmts',1,'p_statements_recursion','compi.py',98),
-  ('statement -> INTDCL NAME ;','statement',3,'p_dcl_declare_int','compi.py',108),
-  ('statement -> INTDCL NAME = expression ;','statement',5,'p_dcl_declare_int','compi.py',109),
-  ('statement -> FLOATDCL NAME ;','statement',3,'p_statement_declare_float','compi.py',128),
-  ('statement -> BOOLDCL NAME ;','statement',3,'p_statement_declare_bool','compi.py',136),
-  ('statement -> PRINT expression ;','statement',3,'p_statement_print','compi.py',144),
-  ('statement -> IF ( boolexp ) { stmts }','statement',7,'p_statement_if','compi.py',151),
-  ('statement -> NAME = expression ;','statement',4,'p_statement_assign','compi.py',161),
-  ('expression -> ( expression )','expression',3,'p_expression_group','compi.py',180),
-  ('expression -> expression + expression','expression',3,'p_expression_binop','compi.py',184),
-  ('expression -> expression - expression','expression',3,'p_expression_binop','compi.py',185),
-  ('expression -> expression * expression','expression',3,'p_expression_binop','compi.py',186),
-  ('expression -> expression / expression','expression',3,'p_expression_binop','compi.py',187),
-  ('expression -> expression ^ expression','expression',3,'p_expression_binop','compi.py',188),
-  ('expression -> INUMBER','expression',1,'p_expression_inumber','compi.py',224),
-  ('expression -> FNUMBER','expression',1,'p_expression_fnumber','compi.py',233),
-  ('expression -> boolexp','expression',1,'p_expression_boolval','compi.py',241),
-  ('boolexp -> BOOLVAL','boolexp',1,'p_bool_expression','compi.py',245),
-  ('expression -> NAME','expression',1,'p_expression_name','compi.py',253),
+  ('prog -> stmts','prog',1,'p_prog','compi.py',97),
+  ('stmts -> statement stmts','stmts',2,'p_statements_recursion','compi.py',104),
+  ('stmts -> statement','stmts',1,'p_statements_recursion','compi.py',105),
+  ('statement -> INTDCL NAME ;','statement',3,'p_dcl_declare_int','compi.py',115),
+  ('statement -> INTDCL NAME = expression ;','statement',5,'p_dcl_declare_int','compi.py',116),
+  ('statement -> FLOATDCL NAME ;','statement',3,'p_statement_declare_float','compi.py',135),
+  ('statement -> FLOATDCL NAME = expression ;','statement',5,'p_statement_declare_float','compi.py',136),
+  ('statement -> BOOLDCL NAME ;','statement',3,'p_statement_declare_bool','compi.py',156),
+  ('statement -> BOOLDCL NAME = boolexp ;','statement',5,'p_statement_declare_bool','compi.py',157),
+  ('statement -> PRINT expression ;','statement',3,'p_statement_print','compi.py',178),
+  ('statement -> IF ( boolexp ) { stmts }','statement',7,'p_statement_if','compi.py',185),
+  ('statement -> IF ( boolexp ) { stmts } ELSE { stmts }','statement',11,'p_statement_if_else','compi.py',195),
+  ('statement -> NAME = expression ;','statement',4,'p_statement_assign','compi.py',209),
+  ('expression -> ( expression )','expression',3,'p_expression_group','compi.py',228),
+  ('expression -> expression + expression','expression',3,'p_expression_binop','compi.py',232),
+  ('expression -> expression - expression','expression',3,'p_expression_binop','compi.py',233),
+  ('expression -> expression * expression','expression',3,'p_expression_binop','compi.py',234),
+  ('expression -> expression / expression','expression',3,'p_expression_binop','compi.py',235),
+  ('expression -> expression ^ expression','expression',3,'p_expression_binop','compi.py',236),
+  ('boolexp -> expression GT expression','boolexp',3,'p_expression_compar','compi.py',270),
+  ('boolexp -> expression LT expression','boolexp',3,'p_expression_compar','compi.py',271),
+  ('boolexp -> expression GE expression','boolexp',3,'p_expression_compar','compi.py',272),
+  ('boolexp -> expression LE expression','boolexp',3,'p_expression_compar','compi.py',273),
+  ('boolexp -> expression EQ expression','boolexp',3,'p_expression_compar','compi.py',274),
+  ('boolexp -> expression NE expression','boolexp',3,'p_expression_compar','compi.py',275),
+  ('expression -> INUMBER','expression',1,'p_expression_inumber','compi.py',315),
+  ('expression -> FNUMBER','expression',1,'p_expression_fnumber','compi.py',324),
+  ('expression -> boolexp','expression',1,'p_expression_boolval','compi.py',332),
+  ('boolexp -> BOOLVAL','boolexp',1,'p_bool_expression','compi.py',336),
+  ('expression -> NAME','expression',1,'p_expression_name','compi.py',344),
 ]

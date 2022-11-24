@@ -1,5 +1,3 @@
 int a=2;
 int b;
-b=0;
-int c;
-c=a+b;
+boolean x=3>2;

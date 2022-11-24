@@ -14,11 +14,18 @@ reserved = {
 
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER',
+    'NAME', 'INUMBER', 'FNUMBER','GE', 'LE', 'EQ', 'NE','GT', 'LT'
 ]
 tokens.extend(reserved.values())
 
 literals = ['=', '+', '-', '/','*','^',';', '(', ')', '{', '}']
+
+t_GE = r'>='
+t_LE = r'<='
+t_EQ = r'=='
+t_NE = r'!='
+t_GT = r'>'
+t_LT = r'<'
 
 # Tokens
 
@@ -184,6 +191,20 @@ def p_statement_if(p):
     n.childrens.append(n2)
     p[0] = n
 
+def p_statement_if_else(p):
+    'statement : IF "(" boolexp ")" "{" stmts "}" ELSE "{" stmts "}"'
+    n = Node()
+    n.type = 'IF'
+    n2 = Node()
+    n2.childrens = p[6]
+    n3 = Node()
+    n3.type = 'ELSE'
+    n3.childrens = p[10]
+    n.childrens.append(p[3])
+    n.childrens.append(n2)
+    n.childrens.append(n3)
+    p[0] = n
+
 def p_statement_assign(p):
     'statement : NAME "=" expression ";"'
     if p[1] not in symbolsTable["table"]:
@@ -245,7 +266,50 @@ def p_expression_binop(p):
         n.childrens.append(p[3])
         p[0] = n
     
-
+def p_expression_compar(p):
+    '''boolexp : expression GT expression
+                  | expression LT expression
+                  | expression GE expression
+                  | expression LE expression
+                  | expression EQ expression
+                  | expression NE expression'''
+                  
+    if p[2] == '>':
+        n = Node()
+        n.type = '>'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '<':
+        n = Node()
+        n.type = '<'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '>=':
+        n = Node()
+        n.type = '>='
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '<=':
+        n = Node()
+        n.type = '<='
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '==':
+        n = Node()
+        n.type = '=='
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '!=':
+        n = Node()
+        n.type = '!='
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
 
 def p_expression_inumber(p):
     "expression : INUMBER"
@@ -322,6 +386,11 @@ def genTAC(node):
         varCounter = varCounter +1
         print( tempVar + " := " + genTAC(node.childrens[0]) + " + " + genTAC(node.childrens[1]))
         return tempVar
+    elif ( node.type in [">", "<", ">=", "<=", "==", "!="] ):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " " + node.type + " " + genTAC(node.childrens[1]))
+        return tempVar
     elif ( node.type == "PRINT"):
         print( "PRINT " + genTAC(node.childrens[0]))
     elif ( node.type == "IF" ):
@@ -333,6 +402,16 @@ def genTAC(node):
         print ( "gotoLabelIf " + tempVar + " " + tempLabel)
         genTAC(node.childrens[1])
         print ( tempLabel)
+        if (node.childrens[2].type == "ELSE"):
+            tempLabel = "l" + str(labelCounter)
+            labelCounter = labelCounter + 1
+            print ( "gotoLabelIf " + tempLabel)
+            print ( genTAC(node.childrens[2]))
+            print ( tempLabel)
+       
+                 
+
+
     else:
         for child in node.childrens:
             genTAC(child)

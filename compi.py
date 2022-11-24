@@ -105,13 +105,25 @@ def p_statements_recursion(p):
         p[0] = [ stmt ]
     
 def p_dcl_declare_int(p):
-    'statement : INTDCL NAME ";"'
-    symbolsTable["table"][p[2]] = { "type": "INT", "value":0}
-    n = Node()
-    n.type = "INT_DLC"
-    n.val = p[2]
-    p[0] = n
+    '''statement : INTDCL NAME ";" 
+                 | INTDCL NAME "=" expression ";" '''
 
+    if (len(p) == 4):
+        symbolsTable["table"][p[2]] = { "type": "INT", "value": 0 }
+        n = Node()
+        n.type = "INT_DLC"
+        n.val = p[2]
+        p[0] = n
+    else:
+        symbolsTable["table"][p[2]] = { "type": "INT", "value": p[4] }
+        n = Node()
+        n.type = "INT_DLC"
+        n.val = p[2]
+        n2 = Node()
+        n2.type = "ASIGN"
+        n2.childrens.append(n)
+        n2.childrens.append(p[4])
+        p[0] = n2
 def p_statement_declare_float(p):
     'statement : FLOATDCL NAME ";"'
     symbolsTable["table"][p[2]] = { "type": "FLOAT", "value":0 }

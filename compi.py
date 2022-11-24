@@ -18,7 +18,7 @@ tokens = [
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', ';', '(', ')', '{', '}']
+literals = ['=', '+', '-', '/','*', '^',';', '(', ')', '{', '}']
 
 # Tokens
 
@@ -170,7 +170,11 @@ def p_expression_group(p):
 
 def p_expression_binop(p):
     '''expression : expression '+' expression
-                  | expression '-' expression'''
+                  | expression '-' expression
+                  | expression '*' expression
+                  | expression '/' expression
+                  | expression '^' expression'''
+                  
     if p[2] == '+':
         n = Node()
         n.type = '+'
@@ -180,6 +184,24 @@ def p_expression_binop(p):
     elif p[2] == '-':
         n = Node()
         n.type = '-'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '*':
+        n = Node()
+        n.type = '*'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '/':
+        n = Node()
+        n.type = '/'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '^':
+        n = Node()
+        n.type = '^'
         n.childrens.append(p[1])
         n.childrens.append(p[3])
         p[0] = n

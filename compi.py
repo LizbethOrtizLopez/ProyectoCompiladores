@@ -18,7 +18,7 @@ tokens = [
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', '/','*', '^',';', '(', ')', '{', '}']
+literals = ['=', '+', '-', '/','*','^',';', '(', ')', '{', '}']
 
 # Tokens
 
@@ -272,7 +272,13 @@ def genTAC(node):
         print(node.childrens[0].val  + " := " + genTAC(node.childrens[1]) )
     elif ( node.type == "INUMBER"):
         return str(node.val)
-    elif ( node.type == "+"):
+    elif ( node.type == "FNUMBER"):
+        return str(node.val)
+    elif ( node.type == "BOOLVAL"):
+        return str(node.val)
+    elif ( node.type == "ID"):
+        return str(node.val)
+    elif ( node.type in ["+", "-", "*", "/", "^"] ):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
         print( tempVar + " := " + genTAC(node.childrens[0]) + " + " + genTAC(node.childrens[1]))

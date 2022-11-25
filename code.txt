@@ -1,3 +1,6 @@
 int a=2;
 int b;
-boolean x=3>2;
+boolean x=false;
+while(x==false){
+a=a+1;
+}

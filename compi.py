@@ -9,7 +9,10 @@ reserved = {
     "true": "BOOLVAL",
     "false": "BOOLVAL",
     "if": "IF",
-    "else": "ELSE"
+    "else": "ELSE",
+    "and": "AND",
+    "or": "OR",
+    "while": "WHILE"
 }
 
 
@@ -26,6 +29,7 @@ t_EQ = r'=='
 t_NE = r'!='
 t_GT = r'>'
 t_LT = r'<'
+
 
 # Tokens
 
@@ -173,6 +177,13 @@ def p_statement_declare_bool(p):
         n2.childrens.append(p[4])
         p[0] = n2
 
+def p_statement_while(p):
+    '''statement : WHILE "(" boolexp ")" "{" stmts "}" '''
+    n = Node()
+    n.type = "WHILE"
+    n.childrens.append(p[3])
+    n.childrens.extend(p[6])
+    p[0] = n
 
 def p_statement_print(p):
     'statement : PRINT expression ";"'
@@ -311,6 +322,22 @@ def p_expression_compar(p):
         n.childrens.append(p[3])
         p[0] = n
 
+def p_expression_boolop(p):
+    '''boolexp : boolexp AND boolexp
+                  | boolexp OR boolexp'''
+                  
+    if p[2] == 'and':
+        n = Node()
+        n.type = 'and'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == 'or':
+        n = Node()
+        n.type = 'or'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
 def p_expression_inumber(p):
     "expression : INUMBER"
     n = Node()
@@ -391,6 +418,24 @@ def genTAC(node):
         varCounter = varCounter +1
         print( tempVar + " := " + genTAC(node.childrens[0]) + " " + node.type + " " + genTAC(node.childrens[1]))
         return tempVar
+    elif ( node.type in ["and", "or"] ):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " " + node.type + " " + genTAC(node.childrens[1]))
+        return tempVar
+    elif ( node.type == "WHILE" ):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print ( tempVar + " := !" + genTAC(node.childrens[0]))
+        label1 = "L" + str(labelCounter)
+        label2 = "L" + str(labelCounter+1)
+        labelCounter = labelCounter + 2
+        print(label1 + ":")
+        print("gotoLabelIf " + tempVar + " " + label2)
+        genTAC(node.childrens[1])
+        print("gotoLabelIf True "+ label1)
+        print(label2 + ":")
+
     elif ( node.type == "PRINT"):
         print( "PRINT " + genTAC(node.childrens[0]))
     elif ( node.type == "IF" ):

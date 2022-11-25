@@ -1,6 +1,4 @@
 int a=2;
-int b;
-boolean x=false;
-while(x==false){
+for(int i=1;i<3;i=i+1;){
 a=a+1;
 }

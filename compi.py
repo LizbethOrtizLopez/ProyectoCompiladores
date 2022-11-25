@@ -12,7 +12,8 @@ reserved = {
     "else": "ELSE",
     "and": "AND",
     "or": "OR",
-    "while": "WHILE"
+    "while": "WHILE",
+    "for": "FOR"
 }
 
 
@@ -183,6 +184,16 @@ def p_statement_while(p):
     n.type = "WHILE"
     n.childrens.append(p[3])
     n.childrens.extend(p[6])
+    p[0] = n
+
+def p_statement_for(p):
+    '''statement : FOR "(" statement boolexp ";" statement ")" "{" stmts "}" '''
+    n = Node()
+    n.type = "FOR"
+    n.childrens.append(p[3])
+    n.childrens.append(p[4])
+    n.childrens.append(p[6])
+    n.childrens.extend(p[9])
     p[0] = n
 
 def p_statement_print(p):
@@ -435,7 +446,20 @@ def genTAC(node):
         genTAC(node.childrens[1])
         print("gotoLabelIf True "+ label1)
         print(label2 + ":")
-
+    elif ( node.type == "FOR" ):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        genTAC(node.childrens[0])
+        print ( tempVar + " := !" + genTAC(node.childrens[1]))
+        label1 = "L" + str(labelCounter)
+        label2 = "L" + str(labelCounter+1)
+        labelCounter = labelCounter + 3
+        print(label1 + ":")
+        print("gotoLabelIf " + tempVar + " " + label2)
+        genTAC(node.childrens[3])
+        genTAC(node.childrens[2])
+        print("gotoLabelIf True "+ label1)
+        print(label2 + ":")
     elif ( node.type == "PRINT"):
         print( "PRINT " + genTAC(node.childrens[0]))
     elif ( node.type == "IF" ):

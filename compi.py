@@ -10,6 +10,7 @@ reserved = {
     "false": "BOOLVAL",
     "if": "IF",
     "else": "ELSE",
+    "elif": "ELIF",
     "and": "AND",
     "or": "OR",
     "while": "WHILE",
@@ -224,6 +225,34 @@ def p_statement_if_else(p):
     n3.childrens = p[10]
     n.childrens.append(p[3])
     n.childrens.append(n2)
+    n.childrens.append(n3)
+    p[0] = n
+def p_statement_elifRecurssive(p):
+    '''elifstatement : ELIF "(" boolexp ")" "{" stmts "}" elifstatement
+                 | ELIF "(" boolexp ")" "{" stmts "}" '''
+    n = Node()
+    n.type = 'ELIF'
+    n2 = Node()
+    n2.childrens = p[6]
+    n.childrens.append(p[3])
+    n.childrens.append(n2)
+    if len(p) == 9:
+        n.childrens.append(p[8])
+    p[0] = n
+def p_statement_elif(p):
+    
+    'statement : IF "(" boolexp ")" "{" stmts "}" elifstatement ELSE "{" stmts "}"'
+    print("elif")
+    n = Node()
+    n.type = 'IF'
+    n2 = Node()
+    n2.childrens = p[6]
+    n3 = Node()
+    n3.type = 'ELSE'
+    n3.childrens = p[11]
+    n.childrens.append(p[3])
+    n.childrens.append(n2)
+    n.childrens.append(p[8])
     n.childrens.append(n3)
     p[0] = n
 
@@ -465,18 +494,40 @@ def genTAC(node):
     elif ( node.type == "IF" ):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
-        print ( tempVar + " := !" + str(node.childrens[0].val))
+        print ( tempVar + " := !" + genTAC(node.childrens[0]))
+        tempLabel = "l" + str(labelCounter)
+        labelCounter = labelCounter + 1
+        print ( "gotoLabelIf " + tempVar + " " + tempLabel)
+        genTAC(node.childrens[1])
+        print ( tempLabel + ":")
+        for child in node.childrens[2:]:
+            genTAC(child)
+    elif (node.type == "ELSE"):
+        tempLabel = "l" + str(labelCounter)
+        labelCounter = labelCounter + 1
+        genTAC(node.childrens[0])
+
+        '''tempLabel = "l" + str(labelCounter)
+        print ( "gotoLabelIf True " + tempLabel)
+        #labelCounter = labelCounter + 1
+        tempLabel = "l" + str(labelCounter-1)
+        print ( tempLabel)
+        genTAC(node.childrens[0])
+        tempLabel = "l" + str(labelCounter)
+        print ( tempLabel)'''
+
+
+    elif (node.type == "ELIF"):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print ( tempVar + " := !" + genTAC(node.childrens[0]))
         tempLabel = "l" + str(labelCounter)
         labelCounter = labelCounter + 1
         print ( "gotoLabelIf " + tempVar + " " + tempLabel)
         genTAC(node.childrens[1])
         print ( tempLabel)
-        if (node.childrens[2].type == "ELSE"):
-            tempLabel = "l" + str(labelCounter)
-            labelCounter = labelCounter + 1
-            print ( "gotoLabelIf " + tempLabel)
-            print ( genTAC(node.childrens[2]))
-            print ( tempLabel)
+        for child in node.childrens[2:]:
+            genTAC(child)
        
                  
 
